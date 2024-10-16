@@ -13,15 +13,15 @@ namespace Pagos.Infrastructure.Data;
 
 public class PaymentProvider : IPaymentProvider
 {
-    private readonly string pagaFacil = "https://app-paga-chg-aviva.azurewebsites.net/swagger";
-    private readonly string cazaPagos = "https://app-paga-chg-aviva.azurewebsites.net/swagger";
+    //La API key puede ser guardada en el key vault usando secrets en vez de exponerla directamente
     private readonly string apiKey = "apikey-vcnmoisyhkif2s"; // API Key
     private static readonly HttpClient client = new HttpClient();
-    private string providerName { get; set; }
+    private string? providerName { get; set; }
 
     private List<Providers> ProviderList { get; set; }
     public PaymentProvider()
     {
+        //Lo ideal es que toda esta informacion venga directamente de la base de datos
         ProviderList = new List<Providers>
         {
             new Providers { Nombre = "PagaFacil", ApiUrl = "https://app-paga-chg-aviva.azurewebsites.net/Order", Tipo = "GET" },
@@ -233,6 +233,7 @@ public class PaymentProvider : IPaymentProvider
         return result;
     }
 
+    //El calculo sobre elegir el mejor proveedor se podría mover a una capa de servicios
     private string GetBetterProvider(PaymentMethod method, List<Product> products)
     {
         var comisiones = GetComisionList();
@@ -281,6 +282,7 @@ public class PaymentProvider : IPaymentProvider
         return provider;
     }
 
+    //Lista de comisiones también puede ser traida desde la base de datos
     private List<Comision> GetComisionList()
     {
         return new List<Comision>

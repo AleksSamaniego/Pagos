@@ -1,6 +1,6 @@
 @Pagos_HostAddress = http://localhost:5038
 
-GET {{Pagos_HostAddress}}/weatherforecast/
+GET {{Pagos_HostAddress}}/pagos/
 Accept: application/json
 
 ###
